@@ -137,11 +137,10 @@ else
     pct_used=0
 fi
 
-thinking_on=false
+effort="default"
 settings_path="$HOME/.claude/settings.json"
 if [ -f "$settings_path" ]; then
-    thinking_val=$(jq -r '.alwaysThinkingEnabled // false' "$settings_path" 2>/dev/null)
-    [ "$thinking_val" = "true" ] && thinking_on=true
+    effort=$(jq -r '.effortLevel // "default"' "$settings_path" 2>/dev/null)
 fi
 
 # ── LINE 1: Model │ Context % │ Directory (branch) │ Session │ Thinking ──
@@ -189,11 +188,12 @@ if [ -n "$session_duration" ]; then
     line1+="${dim}⏱ ${reset}${white}${session_duration}${reset}"
 fi
 line1+="${sep}"
-if $thinking_on; then
-    line1+="${magenta}◐ thinking${reset}"
-else
-    line1+="${dim}◑ thinking${reset}"
-fi
+case "$effort" in
+    high)   line1+="${magenta}● ${effort}${reset}" ;;
+    medium) line1+="${dim}◑ ${effort}${reset}" ;;
+    low)    line1+="${dim}◔ ${effort}${reset}" ;;
+    *)      line1+="${dim}◑ ${effort}${reset}" ;;
+esac
 
 # ── OAuth token resolution ──────────────────────────────
 get_oauth_token() {
