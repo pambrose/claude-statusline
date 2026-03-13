@@ -5,6 +5,9 @@
   "bin": {
     "claude-statusline": "./bin/install.js"
   },
+  "files": [
+    "bin/"
+  ],
   "keywords": [
     "claude",
     "claude-code",
@@ -12,5 +15,8 @@
     "cli"
   ],
   "license": "MIT",
-  "author": "Kamran Ahmed"
+  "author": "Paul Ambrose",
+  "publishConfig": {
+    "access": "public"
+  }
 }
